@@ -1,16 +1,16 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Viewport Meta Tag -->
     <title>Argentinean Translator - with lunfardo (slang)!</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> <!-- Bootstrap CSS -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> <!-- Bootstrap jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> <!-- Bootstrap Popper -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> <!-- Bootstrap JS -->
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             background-color: #f0f8ff;
             padding: 10px;
             margin: 0;
@@ -22,28 +22,27 @@
             padding: 5px;
         }
 
-        #inputText, #outputText, button {
-            width: 90%;
-            max-width: 500px; /* Responsive width */
+        .text-area, .button {
+            width: 100%;
             margin: 10px 0;
             padding: 10px;
             border: 2px solid #003366;
             border-radius: 5px;
         }
 
-        button {
+        .button {
             background-color: #007bff;
             color: white;
             cursor: pointer;
-            padding: 15px; /* Larger for touch screens */
-            font-size: 1rem; /* Larger font size */
+            padding: 15px;
+            font-size: 1rem;
         }
 
-        button:disabled {
+        .button:disabled {
             background-color: grey;
         }
 
-        button:hover:enabled {
+        .button:hover:enabled {
             background-color: #0056b3;
         }
 
@@ -52,26 +51,16 @@
             min-height: 100px;
             resize: vertical;
         }
-
-        @media (max-width: 600px) { /* Media query for small screens */
-            h1, h2 {
-                font-size: 1.2rem; /* Smaller font size on small screens */
-            }
-
-            #inputText, #outputText, button {
-                width: 95%; /* More width for smaller screens */
-            }
-        }
     </style>
 </head>
 <body>
-
-    <h1>Translate to Argentinean Spanish  - with lunfardo (slang)!</h1>
-    <h2>From any language including Spanish</h1>
-    <textarea id="inputText" placeholder="Enter any text...or just press Go to learn a new phrase" bane="inputText" rows="4"></textarea>
-    <button id="translateButton">Go</button>
-    <div id="outputText"></div>
-
+    <div class="container mt-4">
+        <h1>Translate to Argentinean Spanish  - with lunfardo (slang)!</h1>
+        <h2>From any language including Spanish</h2>
+        <textarea id="inputText" class="form-control text-area" placeholder="Enter any text...or just press Go to learn a new phrase" rows="4"></textarea>
+        <button id="translateButton" class="btn btn-primary button">Go</button>
+        <div id="outputText" class="text-area"></div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -231,7 +220,5 @@
 
         });
     </script>
-    
-
 </body>
 </html>
