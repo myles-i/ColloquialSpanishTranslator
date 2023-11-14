@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Viewport Meta Tag -->
     <title>Argentinean Translator - with lunfardo (slang)!</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
@@ -11,42 +11,56 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #f0f8ff; /* Light blue background */
-            padding: 20px;
+            background-color: #f0f8ff;
+            padding: 10px;
+            margin: 0;
         }
 
-        h1 {
-            color: #003366; /* Dark blue color for the heading */
+        h1, h2 {
+            color: #003366;
+            text-align: center;
+            padding: 5px;
         }
 
         #inputText, #outputText, button {
-            width: 80%;
+            width: 90%;
+            max-width: 500px; /* Responsive width */
             margin: 10px 0;
             padding: 10px;
-            border: 2px solid #003366; /* Dark blue border */
+            border: 2px solid #003366;
             border-radius: 5px;
         }
 
         button {
-            background-color: #007bff; /* Bright blue background for the button */
+            background-color: #007bff;
             color: white;
             cursor: pointer;
-            
+            padding: 15px; /* Larger for touch screens */
+            font-size: 1rem; /* Larger font size */
         }
 
         button:disabled {
             background-color: grey;
-            color: white;
         }
 
         button:hover:enabled {
-            background-color: #0056b3; /* Darker blue on hover */
+            background-color: #0056b3;
         }
 
         #outputText {
             height: auto;
             min-height: 100px;
-            resize: vertical; /* Allows vertical resizing */
+            resize: vertical;
+        }
+
+        @media (max-width: 600px) { /* Media query for small screens */
+            h1, h2 {
+                font-size: 1.2rem; /* Smaller font size on small screens */
+            }
+
+            #inputText, #outputText, button {
+                width: 95%; /* More width for smaller screens */
+            }
         }
     </style>
 </head>
