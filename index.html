@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Argentinean Translator - with lunfardo (slang)!</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f8ff; /* Light blue background */
+            padding: 20px;
+        }
+
+        h1 {
+            color: #003366; /* Dark blue color for the heading */
+        }
+
+        #inputText, #outputText, button {
+            width: 80%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px solid #003366; /* Dark blue border */
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff; /* Bright blue background for the button */
+            color: white;
+            cursor: pointer;
+            
+        }
+
+        button:disabled {
+            background-color: grey;
+            color: white;
+        }
+
+        button:hover:enabled {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        #outputText {
+            height: auto;
+            min-height: 100px;
+            resize: vertical; /* Allows vertical resizing */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Translate to Argentinean Spanish  - with lunfardo (slang)!</h1>
+    <h2>From any language including Spanish</h1>
+    <textarea id="inputText" placeholder="Enter any text...or just press Go to learn a new phrase" bane="inputText" rows="4"></textarea>
+    <button id="translateButton">Go</button>
+    <div id="outputText"></div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to get cookie by name
+            function getCookie(name) {
+                let nameEQ = name + "=";
+                let ca = document.cookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            }
+
+            // Function to save cookie
+            function setCookie(name, value, days) {
+                let expires = '';
+                if (days) {
+                    let date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = '; expires=' + date.toUTCString();
+                }
+                document.cookie = name + '=' + (value || '') + expires + '; path=/';
+            }
+            // Function to handle translation
+            async function translateText() {
+                button = document.getElementById("translateButton");
+                button.disabled = true;
+
+                let systemMessage = `
+                Traduci lo que dice el usario a español informal de Argentina con lunfardo. Si usas lunfardo, explica que significa cada lunfardismo usado. Solo usa lunfardo que se podria escuchar hoy en dia en Argentina (no antiquado).
+                
+                Si el usario dice "...#", elegi una frase commun cualquiera con por lo menos un lunfardo que se podria decir en el dia diario.
+
+                El “¡Che Boludo!” Por James Bracken tiene buenos ejemplos.
+                
+                Nunca uses lunfardismo racista o ofensivo.`
+
+                let examples_txt = `
+                Q: No hay muchas personas asiaticas aca.
+
+                R: No hay muchas personas asiaticas aca.
+
+
+                <u> Explicación del lunfardo: </u>
+                No se usa lunfardo en esta frase.
+
+
+                Q: can you go to the pharmacy to get me some cough medicine?
+
+                R: ¿Podés ir a la farmacia a comprarme un jarabe para la tos?
+
+
+                <u> Explicación del lunfardo: </u>
+                No se usa lunfardo en esta frase.
+
+
+                Q: Can I borrow 2 pesos? 
+
+                R: Me **hacés la gamba** con **dos lucas**?
+
+                
+                <u> Explicación del lunfardo: </u>
+                - **hacés la gamba**, significa "hacer el favor"
+                - **dos lucas** significa  “dos mil pesos”
+
+                Q: what a freakin disaster. This man always messes everything up!
+
+                R: Que **quilombo**, este tipo siempre se manda **mocos**
+
+
+                <u> Explicación del lunfardo: </u>
+                - **quilombo** significa desorden o situación caótica.
+                - **mocos** literalment significa mucosa nasal, pero en este contexto significa errores o metidas de pata.
+
+                Q: fue muy facil!
+
+                R: fue una **pavada**! 
+
+
+                <u> Explicación del lunfardo: </u>
+                - **pavada** significa algo que no tiene importancia o que es muy fácil de realizar.
+
+                Q: Would you mind paying for my bus ticket?
+
+                R: ¿Me prestás el **bondi**?
+
+
+                <u> Explicación del lunfardo: </u>
+                - **bondi** es un colectivo o autobús
+
+                En Argentina, la frase "¿Me prestás el bondi?" es una manera coloquial de pedir que alguien te deje usar su tarjeta de transporte público.
+
+                `;
+
+                let inputText = document.getElementById('inputText').value;
+                let temperature = 0.3
+                if (!inputText) {
+                    let r = (Math.random() + 1).toString(36).substring(7);
+                    inputText = "..." + r;
+                    temperature = 1;
+                }
+                console.log(inputText);
+                let apiKey = getCookie('openAIKey');
+                if (!apiKey) {
+                    apiKey = prompt("Please enter your OpenAI API key:", "");
+                    if (apiKey) {
+                        setCookie('openAIKey', apiKey, 30); // Save for 30 days
+                    } else {
+                        alert("API key is required to proceed.");
+                        return;
+                    }
+                }
+                apiKey = getCookie('openAIKey');
+                console.log(apiKey)
+
+                try {
+                    let response = await fetch("https://api.openai.com/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + apiKey
+                        },
+                        body: JSON.stringify({
+                            model: "gpt-4",
+                            temperature: temperature,
+                            messages: [
+                                {
+                                    role: "system",
+                                    content: systemMessage
+                                },
+                                {
+                                    role: "user",
+                                    content: examples_txt + "Q: " + inputText + "R: "
+                                }
+                            ]
+                        })
+                    });
+                    
+                    console.log(response)
+                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+                let data = await response.json()
+                console.log(data)
+
+                document.getElementById('outputText').innerHTML = marked.parse(data.choices[0].message.content.trim());
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert("Failed to fetch translation.");
+                }
+
+                button.disabled = false; // reenable once done
+            }
+
+            document.getElementById('translateButton').addEventListener('click', translateText);
+
+        });
+    </script>
+    
+
+</body>
+</html>
