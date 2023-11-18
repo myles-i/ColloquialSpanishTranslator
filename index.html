@@ -55,11 +55,22 @@
 </head>
 <body>
     <div class="container mt-4">
-        <h1>Translate to Argentinean Spanish  - with lunfardo (slang)!</h1>
-        <h2>From any language including Spanish</h2>
+        <h2 style="text-align: center;">Translate anything to Argentinean Spanish</h2>
+        <h4 style="text-align: center;">From any language, including Spanish</h4>
         <textarea id="inputText" class="form-control text-area" placeholder="Enter any text...or just press Go to learn a new phrase" rows="4"></textarea>
         <button id="translateButton" class="btn btn-primary button">Go</button>
         <div id="outputText" class="text-area"></div>
+        <div style="font-size: smaller; margin-top: 60px;"> <!-- Smaller font size and additional margin -->
+            A popup will ask you to provide your OpenAI API key. This key is stored as a cookie in your browser. Generate yours here: 
+            <a href="https://platform.openai.com/api-keys">https://platform.openai.com/api-keys</a>.
+        </div>
+        <div style="font-size: smaller; margin-top: 20px;"> <!-- Smaller font size and additional margin -->
+            Estimated cost/translation: $0.01</a>.
+        </div>
+        <div style="font-size: smaller; margin-top: 20px;"> <!-- Smaller font size -->
+            Link to source code: 
+            <a href="https://github.com/myles-i/TranslateToArgentineanSpanish">https://github.com/myles-i/TranslateToArgentineanSpanish</a>
+        </div>
     </div>
 
     <script>
@@ -91,77 +102,93 @@
                 button = document.getElementById("translateButton");
                 button.disabled = true;
 
-                let systemMessage = `
-                Traduci lo que dice el usario a español informal de Argentina con lunfardo. Si usas lunfardo, explica que significa cada lunfardismo usado. Solo usa lunfardo que se podria escuchar hoy en dia en Argentina (no antiquado).
-                
-                Si el usario dice "...#", elegi una frase commun cualquiera con por lo menos un lunfardo que se podria decir en el dia diario.
+                let systemMessage = 
+`
+Traduci lo que dice el usario al español informal de Argentina con lunfardo. 
 
-                El “¡Che Boludo!” Por James Bracken tiene buenos ejemplos.
-                
-                Nunca uses lunfardismo racista o ofensivo.`
+Usa lunfardo cuando sea posible, pero solo si se usa hoy en dia en Argentina (no antiquado). El “¡Che Boludo!” Por James Bracken tiene buenos ejemplos.
 
-                let examples_txt = `
-                Q: No hay muchas personas asiaticas aca.
+Cada cosa que sa lunfardo, o una frase/palabra que sea unicamente argentino (no comun en otros paises), ponelo en negrilla usando formato "markdown". Despues, explica el significado de caca frase en negrillo al final. Primero la explicacion literal, y despues colloquial. Sea breve.
 
-                R: No hay muchas personas asiaticas aca.
+Si el usario dice "...###", elegi una frase commun cualquiera que sean unicamente argentina (por ejemplo, que use lunfardo) que se podria decir en el dia diario. A veces una expresion corta, a veces mas larga.
 
+Tene cuidado de seguir el formato de los ejemplos asi se puede leer bien en html.
 
-                <u> Explicación del lunfardo: </u>
-                No se usa lunfardo en esta frase.
+Nunca uses lunfardismo racista o ofensivo.`
 
+                let examples_txt = 
+`
+Q::: No hay muchas personas asiaticas aca.
 
-                Q: can you go to the pharmacy to get me some cough medicine?
-
-                R: ¿Podés ir a la farmacia a comprarme un jarabe para la tos?
+R::: No hay muchas personas asiaticas aca.
 
 
-                <u> Explicación del lunfardo: </u>
-                No se usa lunfardo en esta frase.
+<u> Explicación: </u>
+No se usa lunfardo o argentinadas en esta frase.
 
 
-                Q: Can I borrow 2 pesos? 
+Q::: can you go to the pharmacy to get me some cough medicine?
 
-                R: Me **hacés la gamba** con **dos lucas**?
-
-                
-                <u> Explicación del lunfardo: </u>
-                - **hacés la gamba**, significa "hacer el favor"
-                - **dos lucas** significa  “dos mil pesos”
-
-                Q: what a freakin disaster. This man always messes everything up!
-
-                R: Que **quilombo**, este tipo siempre se manda **mocos**
+R::: ¿Podés ir a la farmacia a comprarme un jarabe para la tos?
 
 
-                <u> Explicación del lunfardo: </u>
-                - **quilombo** significa desorden o situación caótica.
-                - **mocos** literalment significa mucosa nasal, pero en este contexto significa errores o metidas de pata.
-
-                Q: fue muy facil!
-
-                R: fue una **pavada**! 
+<u> Explicación: </u>
+No se usa lunfardo o argentinadas en esta frase.
 
 
-                <u> Explicación del lunfardo: </u>
-                - **pavada** significa algo que no tiene importancia o que es muy fácil de realizar.
+Q::: Can I borrow 2 pesos? 
 
-                Q: Would you mind paying for my bus ticket?
-
-                R: ¿Me prestás el **bondi**?
+R::: Me **hacés la gamba** con **dos lucas**?
 
 
-                <u> Explicación del lunfardo: </u>
-                - **bondi** es un colectivo o autobús
+<u> Explicación: </u>
+- **hacés la gamba**: Literalmente "haces la pierna". En exte context, significan pedir un favor.
+- **dos lucas**:  “dos mil pesos”
 
-                En Argentina, la frase "¿Me prestás el bondi?" es una manera coloquial de pedir que alguien te deje usar su tarjeta de transporte público.
+Q::: what a freakin disaster. This man always messes everything up!
 
-                `;
+R::: Que **quilombo**, este tipo siempre se manda **mocos**
+
+
+<u> Explicación: </u>
+- **quilombo**: desorden o situación caótica.
+- **mocos**: literalment significa mucosa nasal, pero en este contexto significa errores o metidas de pata.
+
+Q::: fue muy facil!
+
+R::: fue una **pavada**! 
+
+
+<u> Explicación: </u>
+- **pavada**: algo que no tiene importancia o que es muy fácil de realizar.
+
+Q::: Would you mind paying for my bus ticket?
+
+R::: ¿Me prestás el **bondi**?
+
+
+<u> Explicación: </u>
+- **bondi**: un colectivo o autobús. En este este contexto "me prestas el bondi" es una manera coloquial de pedir que alguien te deje usar su tarjeta de transporte público.
+
+Q::: ...3489391
+
+R::: Me compré una **remera** re **canchera** en la feria de San Telmo, re **piola** el diseño.
+
+
+<u> Explicación: </u>
+- **remera**:  camiseta o playera
+- **canchera**: se refiere a algo con estilo o a la moda
+- **piola**: se usa para describir algo que es inteligente, astuto o simplemente genial
+
+
+`;
 
                 let inputText = document.getElementById('inputText').value;
                 let temperature = 0.3
                 if (!inputText) {
-                    let r = (Math.random() + 1).toString(36).substring(7);
-                    inputText = "..." + r;
+                    var date = new Date();
+                    var millisecondsSinceEpoch = date.getTime();
+                    inputText = "..." + millisecondsSinceEpoch.toString();
                     temperature = 1;
                 }
                 console.log(inputText);
@@ -176,8 +203,9 @@
                     }
                 }
                 apiKey = getCookie('openAIKey');
-                console.log(apiKey)
 
+                content = examples_txt + "Q::: " + inputText + "\n\nR::: ";
+                console.log(content)
                 try {
                     let response = await fetch("https://api.openai.com/v1/chat/completions", {
                         method: "POST",
@@ -195,7 +223,7 @@
                                 },
                                 {
                                     role: "user",
-                                    content: examples_txt + "Q: " + inputText + "R: "
+                                    content: content
                                 }
                             ]
                         })
@@ -206,8 +234,11 @@
 
                 let data = await response.json()
                 console.log(data)
-
-                document.getElementById('outputText').innerHTML = marked.parse(data.choices[0].message.content.trim());
+                rawMsg = data.choices[0].message.content;
+                console.log(rawMsg)
+                markedMsg = marked.parse(rawMsg)
+                console.log(markedMsg)
+                document.getElementById('outputText').innerHTML = markedMsg;
                 } catch (error) {
                     console.error('Error:', error);
                     alert("Failed to fetch translation.");
