@@ -9,5 +9,5 @@ Note this is not a recommended way to save an API key. In theory, somebody with 
 - Your input text is only ever sent to OpenAI via the API using an https connection.
 - Excluding the input text, website usage statistics (unique visitors, country of origin, etc), is collected via google analytics
 
-# deployed website:
+# Deployed website:
 [https://myles-i.github.io/ColloquialSpanishTranslator/](https://myles-i.github.io/ColloquialSpanishTranslator/)
