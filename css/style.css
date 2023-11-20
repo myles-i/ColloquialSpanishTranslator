@@ -1,0 +1,41 @@
+body {
+    background-color: #f0f8ff;
+    padding: 10px;
+    margin: 0;
+}
+
+h1, h2 {
+    color: #003366;
+    text-align: center;
+    padding: 5px;
+}
+
+.text-area, .button {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 2px solid #003366;
+    border-radius: 5px;
+}
+
+.button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    font-size: 1rem;
+}
+
+.button:disabled {
+    background-color: grey;
+}
+
+.button:hover:enabled {
+    background-color: #0056b3;
+}
+
+#outputText {
+    height: auto;
+    min-height: 100px;
+    resize: vertical;
+}
