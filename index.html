@@ -140,61 +140,67 @@ Nunca usés argot o coloquialismos racistas o ofensivos.`
 
                 let examples_txt = 
 `
-Q::: No hay muchas personas asiáticas acá.
+Q::: 'No hay muchas personas asiáticas acá.'
 
-R(Español coloquial de Argentina)::: No hay muchas personas asiáticas acá.
-
-
-<u> Explicación: </u>
-Esta frase no tiene argot ni coloquialismos
-
-
-Q::: can you go to the pharmacy to get me some cough medicine?
-
-R(Español coloquial de Argentina)::: ¿Podés ir a la farmacia a comprarme un jarabe para la tos?
+R::: (Español coloquial de Argentina) No hay muchas personas asiáticas acá.
 
 
 <u> Explicación: </u>
+
 Esta frase no tiene argot ni coloquialismos
 
 
-Q::: Can I borrow 2 pesos? 
+Q::: 'can you go to the pharmacy to get me some cough medicine?'
 
-R(Español coloquial de Argentina)::: Me **hacés la gamba** con **dos lucas**?
+R::: (Español coloquial de Argentina) ¿Podés ir a la farmacia a comprarme un jarabe para la tos?
+
+
+<u> Explicación: </u>
+
+Esta frase no tiene argot ni coloquialismos
+
+
+Q::: 'Can I borrow 2 pesos?'
+
+R::: (Español coloquial de Argentina) Me **hacés la gamba** con **dos lucas**?
 
 
 <u> Explicación: </u>
 - **hacés la gamba**: Literalmente "haces la pierna". En exte contexto, significa pedir un favor.
 - **dos lucas**:  “dos mil pesos”
 
-Q::: What a freakin disaster. This man always messes everything up!
+Q::: 'What a freakin disaster...
 
-R(Español coloquial de Argentina)::: Que **quilombo**, este tipo siempre se manda **mocos**
+This man always messes everything up!'
+
+R::: (Español coloquial de Argentina) Que **quilombo**...
+
+este tipo siempre se manda **mocos**
 
 
 <u> Explicación: </u>
 - **quilombo**: desorden o situación caótica.
 - **mocos**: literalment significa mucosa nasal, pero en este contexto significa errores o metidas de pata.
 
-Q::: fue muy facil!
+Q::: 'fue muy facil!'
 
-R(Español coloquial de Argentina)::: fue una **pavada**! 
+R::: (Español coloquial de Argentina) fue una **pavada**! 
 
 
 <u> Explicación: </u>
 - **pavada**: algo que no tiene importancia o que es muy fácil de realizar.
 
-Q::: Would you mind paying for my bus ticket?
+Q::: 'Would you mind paying for my bus ticket?'
 
-R(Español coloquial de Argentina)::: ¿Me prestás el **bondi**?
+R::: (Español coloquial de Argentina) ¿Me prestás el **bondi**?
 
 
 <u> Explicación: </u>
 - **bondi**: un colectivo o autobús. En este este contexto "me prestas el bondi" es una manera coloquial de pedir que alguien te deje usar su tarjeta de transporte público.
 
-Q::: ...3489391
+Q::: '...3489391'
 
-R(Español coloquial de Argentina)::: Me compré una **remera** re **canchera** en la feria de San Telmo, re **piola** el diseño.
+R::: (Español coloquial de Argentina) Me compré una **remera** re **canchera** en la feria de San Telmo, re **piola** el diseño.
 
 
 <u> Explicación: </u>
@@ -203,18 +209,18 @@ R(Español coloquial de Argentina)::: Me compré una **remera** re **canchera** 
 - **piola**: se usa para describir algo que es inteligente, astuto o simplemente genial
 
 
-Q::: You're such an idiot!
+Q::: 'You're such an idiot!'
 
-R(Español coloquial de Argentina)::: Que **boludo**!
+R::: (Español coloquial de Argentina) Que **boludo**!
 
 
 <u> Explicación: </u>
 - **boludo**:  En Argentina, "boludo" significa tonto o estupido. Entre amigos, puede signifcar algo como "amigo". Depende del contexto.
 
 
-Q::: You're such an idiot!
+Q::: 'You're such an idiot!'
 
-R(Español coloquial de España)::: Que **gilipollas**!
+R::: (Español coloquial de España) Que **gilipollas**!
 
 
 <u> Explicación: </u>
@@ -242,7 +248,7 @@ R(Español coloquial de España)::: Que **gilipollas**!
                 }
                 apiKey = getCookie('openAIKey');
 
-                content = examples_txt + "Q::: " + inputText + "\n\nR(Español coloquial de "+ selectedCountry + ")::: ";
+                content = examples_txt + "Q::: '" + inputText + "'\n\nR::: (Español coloquial de "+ selectedCountry + ") ";
 
                 // print all input being sent to OpenAI
                 console.log(systemMessage)
@@ -290,6 +296,16 @@ R(Español coloquial de España)::: Que **gilipollas**!
             }
 
             document.getElementById('translateButton').addEventListener('click', translateText);
+
+            // make enter press "translate", and shift+enter add a newling
+            document.getElementById('inputText').addEventListener('keydown', function(event) {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    // Prevent default Enter behavior (newline)
+                    event.preventDefault();
+                    // Trigger button click
+                    document.getElementById('translateButton').click();
+                }
+            });
 
         });
     </script>
