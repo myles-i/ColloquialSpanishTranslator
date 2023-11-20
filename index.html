@@ -18,6 +18,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> <!-- Bootstrap jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> <!-- Bootstrap Popper -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script> <!-- javascript cookie manager-->
     <style>
         body {
             background-color: #f0f8ff;
@@ -96,34 +97,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Function to get cookie by name
-            function getCookie(name) {
-                let nameEQ = name + "=";
-                let ca = document.cookie.split(';');
-                for (let i = 0; i < ca.length; i++) {
-                    let c = ca[i];
-                    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-                    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-                }
-                return null;
-            }
-
-            // Function to save cookie
-            function setCookie(name, value, days) {
-                let expires = '';
-                if (days) {
-                    let date = new Date();
-                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                    expires = '; expires=' + date.toUTCString();
-                }
-                document.cookie = name + '=' + (value || '') + expires + '; path=/';
-            }
             // Function to handle translation
             async function translateText() {
                 button = document.getElementById("translateButton");
                 button.disabled = true;
                 button.innerText = "Processing..."
                 var selectedCountry = document.getElementById('languageSelect').value;
+                Cookies.set('selectedCountry', selectedCountry, { expires: 3650 }); //save selected country for future sessions
                 let systemMessage = 
 `
 Traducí lo que dice el usuario a una frase en español informal usando argot y coloquialismos de `+ selectedCountry + `. La idea es aprender como un local de `+ selectedCountry + ` lo diría. La traducción NO debería ser literal, y NO debería traducir cada palabrita. Sé lo mas breve e informal posible. Si hay una manera de decirlo que solamente se diria `+ selectedCountry + `, mejor! Solo usá lenguaje que se escucha hoy en día (no antiquado).
@@ -228,29 +208,32 @@ R::: (Español coloquial de España) Que **gilipollas**!
 
 
 `; 
+                // if there is no input text, prompt chatgpt to simply output an interesting phrase
                 let inputText = document.getElementById('inputText').value;
-                let temperature = 0.3
+                let temperature = 0.3 // by default, lower temperature to get highest probability output
                 if (!inputText) {
                     var date = new Date();
                     var millisecondsSinceEpoch = date.getTime();
-                    inputText = "..." + millisecondsSinceEpoch.toString();
-                    temperature = 1;
+                    inputText = "..." + millisecondsSinceEpoch.toString(); // give it todays ms time as a "random" number
+                    temperature = 1; // for a random phrase, maximize the temperature to get more variable output
                 }
-                let apiKey = getCookie('openAIKey');
+
+                // get openAI Key from cookie
+                let apiKey = Cookies.get('openAIKey');
                 if (!apiKey) {
                     apiKey = prompt("Please enter your OpenAI API key:", "");
                     if (apiKey) {
-                        setCookie('openAIKey', apiKey, 30); // Save for 30 days
+                        Cookies.set('openAIKey', apiKey, { expires: 3650 }); //expires in 10 years
                     } else {
                         alert("API key is required to proceed.");
                         return;
                     }
                 }
-                apiKey = getCookie('openAIKey');
+                apiKey = Cookies.get('openAIKey');
 
+
+                // build up the chatgpt prompt from the examples, and user message, and send to OpenAI
                 content = examples_txt + "Q::: '" + inputText + "'\n\nR::: (Español coloquial de "+ selectedCountry + ") ";
-
-                // print all input being sent to OpenAI
                 console.log(systemMessage)
                 console.log(content)
                 try {
@@ -280,9 +263,9 @@ R::: (Español coloquial de España) Que **gilipollas**!
                     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
                 let data = await response.json()
-                console.log(data)
+                // console.log(data)
                 rawMsg = data.choices[0].message.content;
-                console.log(rawMsg)
+                // console.log(rawMsg)
                 markedMsg = marked.parse(rawMsg)
                 console.log(markedMsg)
                 document.getElementById('outputText').innerHTML = markedMsg;
@@ -291,10 +274,18 @@ R::: (Español coloquial de España) Que **gilipollas**!
                     alert("Failed to fetch translation.");
                 }
 
-                button.disabled = false; // reenable once done
+                // reenable button once done
+                button.disabled = false; 
                 button.innerText = "Translate!"
             }
 
+            // set selected country based on saved cookie
+            let defaultCountry = Cookies.get('selectedCountry');
+            if (defaultCountry){
+                document.getElementById('languageSelect').value = Cookies.get('selectedCountry');
+            }
+
+            // add event handler for button press
             document.getElementById('translateButton').addEventListener('click', translateText);
 
             // make enter press "translate", and shift+enter add a newling
