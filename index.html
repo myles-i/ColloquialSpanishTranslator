@@ -12,7 +12,7 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Viewport Meta Tag -->
-    <title>Argentinean Translator - with lunfardo (slang)!</title>
+    <title>Coloquial Spanish Translator</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> <!-- Bootstrap CSS -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> <!-- Bootstrap jQuery -->
@@ -64,10 +64,22 @@
 </head>
 <body>
     <div class="container mt-4">
-        <h2 style="text-align: center;">Translate anything to Argentinean Spanish</h2>
-        <h4 style="text-align: center;">From any language, including Spanish</h4>
-        <textarea id="inputText" class="form-control text-area" placeholder="Enter any text...or just press Go to learn a new phrase" rows="4"></textarea>
-        <button id="translateButton" class="btn btn-primary button">Go</button>
+        <h3 style="text-align: center;">Coloquial Spanish Translator</h3>
+        <h5 style="text-align: center;">From any language</h5>
+        <textarea id="inputText" class="form-control text-area" placeholder="Enter anything...or press 'Translate' to learn a new phrase" rows="4"></textarea>
+        <div class="form-group">
+            <label for="languageSelect" style="color: #003366;">Select Country:</label>
+            <select class="form-control" id="languageSelect">
+                <option value="Argentina">Argentina</option>
+                <option value="Chile">Chile</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Guatemala">Guatemala</option>
+                <option value="México">México</option>
+                <option value="Peru">Peru</option>
+                <option value="España">España</option>
+            </select>
+        </div>
+        <button id="translateButton" class="btn btn-primary button">Translate</button>
         <div id="outputText" class="text-area"></div>
         <div style="font-size: smaller; margin-top: 60px;"> <!-- Smaller font size and additional margin -->
             A popup will ask you to provide your OpenAI API key. This key is stored as a cookie in your browser. Generate yours here: 
@@ -110,53 +122,54 @@
             async function translateText() {
                 button = document.getElementById("translateButton");
                 button.disabled = true;
-
+                button.innerText = "Processing..."
+                var selectedCountry = document.getElementById('languageSelect').value;
                 let systemMessage = 
 `
-Traduci lo que dice el usario al español informal de Argentina con lunfardo. 
+Traducí lo que dice el usuario a una frase en español informal usando argot y coloquialismos de `+ selectedCountry + `. La idea es aprender como un local de `+ selectedCountry + ` lo diría. La traducción NO debería ser literal, y NO debería traducir cada palabrita. Sé lo mas breve e informal posible. Si hay una manera de decirlo que solamente se diria `+ selectedCountry + `, mejor! Solo usá lenguaje que se escucha hoy en día (no antiquado).
 
-Usa lunfardo cuando sea posible, pero solo si se usa hoy en dia en Argentina (no antiquado). El “¡Che Boludo!” Por James Bracken tiene buenos ejemplos.
+Poné en negrilla (usando formato "markdown" asi: **negrilla**) cada uso de una expresión o palabra que sea particular al país. Si hay alguna duda del significado, ponelo en negrilla. Después, explicá el significado de cada frase en negrilla al final. Primero la explicación literal, y después coloquial. Sé breve.
 
-Cada cosa que sa lunfardo, o una frase/palabra que sea unicamente argentino (no comun en otros paises), ponelo en negrilla usando formato "markdown". Despues, explica el significado de caca frase en negrillo al final. Primero la explicacion literal, y despues colloquial. Sea breve.
+El “¡Che Boludo!” por James Bracken tiene buenos ejemplos para el español informal de Argentina con lunfardo. Para `+ selectedCountry + `, el argot y los coloquialismos pueden ser diferentes, pero esto te da una idea del tono. Para español de Argentina, siempre usá el lunfardo si es posible. Esto lo hace divertido.
 
-Si el usario dice "...###", elegi una frase commun cualquiera que sean unicamente argentina (por ejemplo, que use lunfardo) que se podria decir en el dia diario. A veces una expresion corta, a veces mas larga.
+Si el usario dice "...###", elegí una frase común cualquiera que sea únicamente de `+ selectedCountry + ` que se podría decir en el día a día. A veces una expresión corta, a veces más larga.
 
-Tene cuidado de seguir el formato de los ejemplos asi se puede leer bien en html.
+Tené cuidado de seguir el formato de los ejemplos así se puede leer bien en html.
 
-Nunca uses lunfardismo racista o ofensivo.`
+Nunca usés argot o coloquialismos racistas o ofensivos.`
 
                 let examples_txt = 
 `
-Q::: No hay muchas personas asiaticas aca.
+Q::: No hay muchas personas asiáticas acá.
 
-R::: No hay muchas personas asiaticas aca.
+R(Español coloquial de Argentina)::: No hay muchas personas asiáticas acá.
 
 
 <u> Explicación: </u>
-No se usa lunfardo o argentinadas en esta frase.
+Esta frase no tiene argot ni coloquialismos
 
 
 Q::: can you go to the pharmacy to get me some cough medicine?
 
-R::: ¿Podés ir a la farmacia a comprarme un jarabe para la tos?
+R(Español coloquial de Argentina)::: ¿Podés ir a la farmacia a comprarme un jarabe para la tos?
 
 
 <u> Explicación: </u>
-No se usa lunfardo o argentinadas en esta frase.
+Esta frase no tiene argot ni coloquialismos
 
 
 Q::: Can I borrow 2 pesos? 
 
-R::: Me **hacés la gamba** con **dos lucas**?
+R(Español coloquial de Argentina)::: Me **hacés la gamba** con **dos lucas**?
 
 
 <u> Explicación: </u>
-- **hacés la gamba**: Literalmente "haces la pierna". En exte context, significan pedir un favor.
+- **hacés la gamba**: Literalmente "haces la pierna". En exte contexto, significa pedir un favor.
 - **dos lucas**:  “dos mil pesos”
 
-Q::: what a freakin disaster. This man always messes everything up!
+Q::: What a freakin disaster. This man always messes everything up!
 
-R::: Que **quilombo**, este tipo siempre se manda **mocos**
+R(Español coloquial de Argentina)::: Que **quilombo**, este tipo siempre se manda **mocos**
 
 
 <u> Explicación: </u>
@@ -165,7 +178,7 @@ R::: Que **quilombo**, este tipo siempre se manda **mocos**
 
 Q::: fue muy facil!
 
-R::: fue una **pavada**! 
+R(Español coloquial de Argentina)::: fue una **pavada**! 
 
 
 <u> Explicación: </u>
@@ -173,7 +186,7 @@ R::: fue una **pavada**!
 
 Q::: Would you mind paying for my bus ticket?
 
-R::: ¿Me prestás el **bondi**?
+R(Español coloquial de Argentina)::: ¿Me prestás el **bondi**?
 
 
 <u> Explicación: </u>
@@ -181,7 +194,7 @@ R::: ¿Me prestás el **bondi**?
 
 Q::: ...3489391
 
-R::: Me compré una **remera** re **canchera** en la feria de San Telmo, re **piola** el diseño.
+R(Español coloquial de Argentina)::: Me compré una **remera** re **canchera** en la feria de San Telmo, re **piola** el diseño.
 
 
 <u> Explicación: </u>
@@ -190,8 +203,25 @@ R::: Me compré una **remera** re **canchera** en la feria de San Telmo, re **pi
 - **piola**: se usa para describir algo que es inteligente, astuto o simplemente genial
 
 
-`;
+Q::: You're such an idiot!
 
+R(Español coloquial de Argentina)::: Que **boludo**!
+
+
+<u> Explicación: </u>
+- **boludo**:  En Argentina, "boludo" significa tonto o estupido. Entre amigos, puede signifcar algo como "amigo". Depende del contexto.
+
+
+Q::: You're such an idiot!
+
+R(Español coloquial de España)::: Que **gilipollas**!
+
+
+<u> Explicación: </u>
+- **gilipollas**:  En Espana, "gilipollas" significa necio o estúpido
+
+
+`; 
                 let inputText = document.getElementById('inputText').value;
                 let temperature = 0.3
                 if (!inputText) {
@@ -200,7 +230,6 @@ R::: Me compré una **remera** re **canchera** en la feria de San Telmo, re **pi
                     inputText = "..." + millisecondsSinceEpoch.toString();
                     temperature = 1;
                 }
-                console.log(inputText);
                 let apiKey = getCookie('openAIKey');
                 if (!apiKey) {
                     apiKey = prompt("Please enter your OpenAI API key:", "");
@@ -213,7 +242,10 @@ R::: Me compré una **remera** re **canchera** en la feria de San Telmo, re **pi
                 }
                 apiKey = getCookie('openAIKey');
 
-                content = examples_txt + "Q::: " + inputText + "\n\nR::: ";
+                content = examples_txt + "Q::: " + inputText + "\n\nR(Español coloquial de "+ selectedCountry + ")::: ";
+
+                // print all input being sent to OpenAI
+                console.log(systemMessage)
                 console.log(content)
                 try {
                     let response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -254,6 +286,7 @@ R::: Me compré una **remera** re **canchera** en la feria de San Telmo, re **pi
                 }
 
                 button.disabled = false; // reenable once done
+                button.innerText = "Translate!"
             }
 
             document.getElementById('translateButton').addEventListener('click', translateText);
