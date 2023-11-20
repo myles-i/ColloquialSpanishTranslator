@@ -87,7 +87,7 @@
             <a href="https://platform.openai.com/api-keys">https://platform.openai.com/api-keys</a>.
         </div>
         <div style="font-size: smaller; margin-top: 20px;"> <!-- Smaller font size and additional margin -->
-            Estimated cost/translation: $0.01</a>.
+            Estimated cost/translation: $0.015</a>.
         </div>
         <div style="font-size: smaller; margin-top: 20px;"> <!-- Smaller font size -->
             Link to source code: 
@@ -220,17 +220,6 @@ R::: (Español coloquial de España) Que **gilipollas**!
 
                 // get openAI Key from cookie
                 let apiKey = Cookies.get('openAIKey');
-                if (!apiKey) {
-                    apiKey = prompt("Please enter your OpenAI API key:", "");
-                    if (apiKey) {
-                        Cookies.set('openAIKey', apiKey, { expires: 3650 }); //expires in 10 years
-                    } else {
-                        alert("API key is required to proceed.");
-                        return;
-                    }
-                }
-                apiKey = Cookies.get('openAIKey');
-
 
                 // build up the chatgpt prompt from the examples, and user message, and send to OpenAI
                 content = examples_txt + "Q::: '" + inputText + "'\n\nR::: (Español coloquial de "+ selectedCountry + ") ";
@@ -244,7 +233,8 @@ R::: (Español coloquial de España) Que **gilipollas**!
                             "Authorization": "Bearer " + apiKey
                         },
                         body: JSON.stringify({
-                            model: "gpt-4",
+                            model: "gpt-4-1106-preview",
+                            // model: "gpt-3.5-turbo-1106",
                             temperature: temperature,
                             messages: [
                                 {
@@ -270,6 +260,15 @@ R::: (Español coloquial de España) Que **gilipollas**!
                 console.log(markedMsg)
                 document.getElementById('outputText').innerHTML = markedMsg;
                 } catch (error) {
+                    if (error.message.includes('401'))
+                    {
+                        apiKey = prompt("Please enter your OpenAI API key:", "");
+                        if (apiKey) {
+                            Cookies.set('openAIKey', apiKey, { expires: 3650 }); //expires in 10 years
+                            translateText();
+                            return;
+                        }
+                    }
                     console.error('Error:', error);
                     alert("Failed to fetch translation.");
                 }
