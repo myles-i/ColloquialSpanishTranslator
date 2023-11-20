@@ -19,14 +19,18 @@ Use este proceso para hacer la traducion:
    - Si hay una manera de decirlo que solamente se diria `+ selectedCountry + `, mejor!
    - Solo usá lenguaje que se escucha hoy en día (no antiquado).
 2. Repite esta traduccion con el formato que dio el USER, y resalta en negrilla el `+ slang +` y los coloquialismos de tu pais. Acuerdese que USER no es de `+ selectedCountry + ` y va a necesitar bastantes definiciones para entender.
-3. Defini lo que marcaste en negrillo en el formato indicado en los ejemplos. Primero la definicion literal, y despues su signicado en context de la frase. Se breve.
+3. Define lo que marcaste con negrilla en el formato indicado en los ejemplos:
+   - Primero la definicion literal (no coloquial), especialmente si es vulgar o sexual. Es mejor que tu amigo sepa la verdad para su aprendizaje asi sabe cuando usar esta expresion.
+   - Despues la su signicado en el contexto de la frase y de tu pais.
 
 Si USER dice "...###" use este proceso para ayudarle a tu amigo aprender una expresion nueva:
 1. Escribi una frase en una linea y sin formato con estas caracteristicas:
   - que la expresion sea únicamente de `+ selectedCountry + ` que se podría decir en el día a día.
   - A veces una expresión corta, a veces más larga.
 2. Repeti esta expresion y resalta en negrilla el `+ slang +` y los coloquialismos de tu pais. Acuerdese que USER no es de `+ selectedCountry + ` y va a necesitar bastantes definiciones para entender.
-3. Defini lo que marcaste en negrillo en el formato indicado en los ejemplos. Primero la definicion literal, y despues su signicado en context de la frase. Se breve.
+3. Define lo que marcaste con negrilla en el formato indicado en los ejemplos:
+  - Primero la definicion literal (no coloquial), especialmente si es vulgar o sexual. Es mejor que tu amigo sepa la verdad para su aprendizaje asi sabe cuando usar esta expresion.
+  - Despues la su signicado en el contexto de la frase y de tu pais.
 
 Tené cuidado de seguir el formato de los ejemplos así se puede leer bien en html.
 

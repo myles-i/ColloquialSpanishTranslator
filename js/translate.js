@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // get user prompt from textbox.
         let examples_txt = getExamplesText();
         let inputText = document.getElementById('inputText').value;
-        let temperature = 0.3 // by default, lower temperature to get highest probability output
+        let temperature = 0 // by default, lower temperature to get highest probability output
         if (!inputText) {
             // if text input is empty, prompt chatgpt to output an interesting phrase
             var date = new Date();
