@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify({
                     model: "gpt-4-1106-preview",
+                    // model: "gpt-4",
                     // model: "gpt-3.5-turbo-1106",
                     temperature: temperature,
                     messages: [
@@ -58,13 +59,21 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             // throw an error if response is not ok
-            console.log(response)
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
             // otherwise, update the result text box
             let data = await response.json()
-            rawMsg = data.choices[0].message.content;
-            markedMsg = marked.parse(rawMsg)
+            console.log(data)
+            let rawMsg = data.choices[0].message.content;
+            // console.log(rawMsg)
+
+            // get rid of first line
+            let lines = rawMsg.split('\n').slice(1);
+            let processedMsg = lines.join('\n');
+
+            // conver markdown to html and put into pages
+            let markedMsg = marked.parse(processedMsg)
+            // console.log(markedMsg)
             document.getElementById('outputText').innerHTML = markedMsg;
         } 
         catch (error) {
