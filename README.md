@@ -10,4 +10,4 @@ Note this is not a recommended way to save an API key. In theory, somebody with 
 - Excluding the input text, website usage statistics (unique visitors, country of origin, etc), is collected via google analytics
 
 # deployed website:
-[https://myles-i.github.io/TranslateToArgentineanSpanish/](https://myles-i.github.io/TranslateToArgentineanSpanish/)
+[https://myles-i.github.io/ColloquialSpanishTranslator/](https://myles-i.github.io/ColloquialSpanishTranslator/)
