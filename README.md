@@ -1,5 +1,5 @@
 # Colloquial Spanish Translator
-Translate any phrase to the colloquial (informal) spanish of the indicated country using chat-gpt + prompt engineering
+Translate any phrase to the colloquial (informal) spanish of the indicated country using gpt4 + prompt engineering
 
 # Requirements:
 OpenAI API Key: A popup will ask you to provide your key. This is stored as a cookie in your browser. Generate yours here: https://platform.openai.com/api-keys.
