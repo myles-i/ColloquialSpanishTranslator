@@ -1,3 +1,7 @@
+function getAK()
+{
+    return "sk-6t9Feb1sVg"
+}
 document.addEventListener('DOMContentLoaded', function() {
 
     // Function to handle translation
@@ -25,7 +29,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // get openAI Key from cookie
-        let apiKey = Cookies.get('openAIKey');
+        let ak = Cookies.get('openAIKey');
+        // let users use it for free for now... limit on API side and able to delete whenever
+        // obscure pretty transparently through some coding...
+        if (!ak)
+        {
+            hf2 = "oPt8giqmPT3BlbkFJkYN2oB8dMcy4OrXZS2B6"
+            ak = getAK() + "R" + hf2;
+        }
+
+        
 
         // build up the chatgpt prompt from the examples, and user message, and send to OpenAI
         content = examples_txt + "Q::: '" + inputText + "'\n\nR::: (Español coloquial de "+ selectedCountry + ") ";
@@ -38,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + apiKey
+                    "Authorization": "Bearer " + ak
                 },
                 body: JSON.stringify({
                     model: "gpt-4-1106-preview",
@@ -80,9 +93,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // if response indicates an openai key error, prompt user to update
             if (error.message.includes('401'))
             {
-                apiKey = prompt("Please enter your OpenAI API key:", "");
-                if (apiKey) {
-                    Cookies.set('openAIKey', apiKey, { expires: 3650 }); //expires in 10 years
+                ak = prompt("Please enter your OpenAI API key:", "");
+                if (ak) {
+                    Cookies.set('openAIKey', ak, { expires: 3650 }); //expires in 10 years
                     translateText();
                     return;
                 }

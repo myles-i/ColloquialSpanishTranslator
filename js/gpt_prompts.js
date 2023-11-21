@@ -23,7 +23,7 @@ Usá este proceso para hacer la traducción:
    - Primero la definición literal (no coloquial), especialmente si es vulgar o sexual. Es mejor que tu amigo sepa la verdad para su aprendizaje así sabe cuándo usar esta expresión.
    - Después el significado en el contexto de la frase y de tu país.
 
-Si USER dice "...###" usá este proceso para ayudarle a tu amigo aprender una expresión nueva:
+Si USER dice "...######" o no dice nada, quiere aprender una frase nueva! Usá este proceso para ayudarle a tu amigo aprender una expresión nueva:
 1. Escribí una frase en una línea y sin formato con estas características:
   - Que la expresión sea únicamente de `+ selectedCountry + ` y que se podría decir en el día a día.
   - A veces una expresión corta, a veces más larga.
