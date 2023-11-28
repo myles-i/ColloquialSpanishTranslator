@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // disable button while translating..
         button = document.getElementById("translateButton");
         button.disabled = true;
-        button.innerText = "Processing..."
-
+        button.innerText = "Working..."
+        
         // get system prompt based on selected country
         var selectedCountry = document.getElementById('languageSelect').value;
         Cookies.set('selectedCountry', selectedCountry, { expires: 3650 }); //save selected country for future sessions
