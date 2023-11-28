@@ -27,7 +27,7 @@ h1, h2, h3, h4, h5 {
 }
 
 /* Ensure buttons don't shrink too much on smaller screens */
-.col-1 {
+.col-2 {
     min-width: 80px; /* Adjust this value based on your design needs */
 }
 
