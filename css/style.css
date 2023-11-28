@@ -26,6 +26,11 @@ h1, h2, h3, h4, h5 {
     background-color: #0056b3;
 }
 
+/* Ensure buttons don't shrink too much on smaller screens */
+.col-1 {
+    min-width: 60px; /* Adjust this value based on your design needs */
+}
+
 #outputText {
     height: auto;
     min-height: 100px;
