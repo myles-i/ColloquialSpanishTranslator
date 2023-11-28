@@ -15,8 +15,8 @@
     <title>Colloquial Spanish Translator</title>
 
     <!--  link in stylesheets-->
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/style.css">
     
 
     <!--  get external javascript functions-->
@@ -44,12 +44,22 @@
                 <option value="Puerto Rico">Peru</option>
             </select>
         </div>
-        <button id="translateButton" class="btn btn-primary button">Translate</button>
-        <div id="outputText" class="text-area"></div>
+        <div class="row">
+            <div class="col-1">
+                <button id="leftButton" class="btn btn-primary button">&lt;</button>
+            </div>
+            <div class="col-10">
+                <button id="translateButton" class="btn btn-primary button">Translate</button>
+            </div>
+            <div class="col-1">
+                <button id="rightButton" class="btn btn-primary button">&gt;</button>
+            </div>
+        </div>
         <div style="font-size: smaller; margin-top: 60px;"> 
             NOTE: This site will always be free, but may require each user to provide their own API key in the future for the chatgpt cost. 
             This would cost the user about $0.015/translation which I am currently paying OpenAI to run the site"
         </div>
+        <div id="outputText" class="text-area"></div>
         <!-- 
         <div style="font-size: smaller; margin-top: 60px;"> <!-- Smaller font size and additional margin
             This site itself is free, but requires chatgpt access - i.e. each user to provide their own API key.
